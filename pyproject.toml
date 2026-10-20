@@ -1,10 +1,11 @@
 [build-system]
-requires = ["hatchling"]
+# Match the validated metadata format accepted by the release Twine checks.
+requires = ["hatchling==1.31.0"]
 build-backend = "hatchling.build"
 
 [project]
 name = "laya-mlx"
-version = "0.4.0"
+version = "0.5.0"
 description = "Native MLX inference for Laya typed decision models on Apple silicon"
 keywords = ["mlx", "laya", "typed-decisions", "decision-model", "local-ai", "apple-silicon"]
 classifiers = [
@@ -25,12 +26,25 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+serve = ["fastapi>=0.110.0", "uvicorn>=0.27.0", "httpx>=0.27.0"]
+mcp = ["mcp>=2.2.0"]
+structured = ["pydantic>=2"]
+calibration = ["torch>=2.14,<3"]
+langchain = ["langchain-core>=0.2.0", "langgraph>=0.1.0"]
+langgraph = ["langchain-core>=0.2.0", "langgraph>=0.1.0"]
+llamaindex = ["llama-index-core>=0.10.0"]
+crewai = ["crewai>=0.28.0"]
+agno = ["agno>=1.1.14,<2"]
 dev = ["pytest>=8", "ruff>=0.12", "build>=1"]
 reference = ["torch>=2.14,<3", "transformers>=5.17,<6", "safetensors>=0.6"]
 benchmark = ["matplotlib>=3.10", "pyarrow>=18"]
 demo = ["rich>=15,<16", "Pillow>=12,<13"]
 
 [project.scripts]
+laya-mlx-router = "laya_mlx.router_cli:main"
+laya-mlx-serve = "laya_mlx.serve:main"
+laya-mlx-evals = "laya_mlx.evals_cli:main"
+laya-mlx-mcp-server = "laya_mlx.mcp.server:main"
 laya-mlx = "laya_mlx.cli:main"
 laya-snake = "laya_mlx.snake.cli:main"
 
@@ -57,3 +71,7 @@ extend-exclude = [".upstream"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.uv]
+# CrewAI and the Snake demo currently require incompatible Rich major versions.
+conflicts = [[{ extra = "crewai" }, { extra = "demo" }]]

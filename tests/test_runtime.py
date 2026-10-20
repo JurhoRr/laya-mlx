@@ -86,7 +86,7 @@ def test_missing_and_misshaped_weights_fail_loudly(tiny_checkpoint):
 )
 def test_invalid_questions_rejected(question):
     with pytest.raises(ValueError):
-        Agent._to_internal(question)
+        Agent._check_question("q", question)
 
 
 def test_structured_criteria_and_mask_injection(tiny_checkpoint):
@@ -198,3 +198,25 @@ def test_router_languages_precedence_and_residency():
     assert router.loaded == ["multilingual"]
     router.unload()
     assert router.loaded == []
+
+
+def test_offline_resolution_reaches_hub_cache_without_coreml_controls(tmp_path, monkeypatch):
+    import laya_mlx.agent as module
+    from laya_mlx import Router
+
+    folder = tmp_path / "checkpoint"
+    (folder / "encoder").mkdir(parents=True)
+    for name in ("model.safetensors", "rl_agent_config.json", "encoder/config.json"):
+        (folder / name).write_text("{}")
+    calls = []
+
+    def cached(repo, **kwargs):
+        calls.append((repo, kwargs))
+        assert kwargs["local_files_only"] is True
+        return str(folder)
+
+    monkeypatch.setattr(module, "snapshot_download", cached)
+    assert module.resolve_model("test/offline", local_files_only=True) == folder
+    assert calls[0][0] == "test/offline"
+    with pytest.raises(TypeError, match="compute_units"):
+        Router(compute_units="cpu_gpu")

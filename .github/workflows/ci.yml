@@ -22,17 +22,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: NandhaKishorM/laya
-          ref: 573e5b62696ba441230cd6be71d593331b5d23af
+          ref: ffc142012af63d015fa19f05f29f9c5ff329a2cc
           path: .upstream
-      - uses: actions/checkout@v4
-        with:
-          repository: NandhaKishorM/laya
-          ref: 1adc59f7e371deb601fcfa18a14e25db238addcc
-          path: .cache/upstream-v0.4.1
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install -e '.[dev,reference,demo]'
+      - run: python -m pip install -e '.[dev,reference,demo,serve,mcp,structured,llamaindex]'
       - run: ruff check . && ruff format --check .
       - run: pytest -q
       - name: Diagnose native CPU failures
