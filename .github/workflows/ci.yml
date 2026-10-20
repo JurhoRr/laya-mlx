@@ -29,7 +29,12 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e '.[dev,reference,demo,serve,mcp,structured,llamaindex]'
       - run: ruff check . && ruff format --check .
-      - run: pytest -q
+      # Run timing-sensitive upstream host contracts before native model tests,
+      # in a separate process. Keep every upstream assertion and timeout unchanged.
+      - name: Upstream host contracts
+        run: pytest -q tests/test_official_contract.py
+      - name: Native and integration tests
+        run: pytest -q --ignore=tests/test_official_contract.py
       - name: Diagnose native CPU failures
         if: failure()
         run: python -u -m scripts.diagnose_parallel_cpu
