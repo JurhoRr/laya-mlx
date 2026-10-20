@@ -35,5 +35,6 @@
   "ci_run": "https://github.com/mizorewww/laya-mlx/actions/runs/39351904377",
   "release_run": "https://github.com/mizorewww/laya-mlx/actions/runs/39352243769",
   "post_release_ci": "https://github.com/mizorewww/laya-mlx/actions/runs/39354961828",
-  "ci_timing_note": "Documentation-only CI runs exposed intermittent failures in unchanged upstream 100 ms idle-window assertions. Host contracts now run before native tests in a separate process; all assertions and timeouts remain unchanged. Full CI passed after this scheduling change. Previous failed attempts remain visible in Actions."
+  "ci_timing_note": "Post-release documentation CI intermittently fails unchanged upstream 100 ms idle-window assertions. Isolation did not eliminate it. The same failure was reproduced directly against the original pinned upstream tests and laya.serve on the same runner; 254 native/integration tests passed. No runtime, assertions or timeouts changed. See docs/CI_TIMING.md; latest documentation CI can remain red.",
+  "upstream_timing_reproduction": "https://github.com/mizorewww/laya-mlx/actions/runs/39355649931"
 }

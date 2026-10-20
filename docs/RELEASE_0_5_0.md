@@ -33,3 +33,5 @@ Router; ordinary inference needs no PyTorch or Transformers.
 Publication verified on 2026-10-20: GitHub Release and PyPI wheel/sdist hashes match, public wheel source matches the tag, and a public-index reinstall passes all three offline real-model checks. See `benchmarks/results/release-v050.json`.
 
 Post-release CI runs exposed intermittent failures in the unchanged upstream idle-window timing test. Running host contracts before native model tests in a separate process passed one complete CI, but a subsequent run reproduced the timing failure; isolation has not eliminated it. No runtime, assertion or timeout was changed. Failure diagnostics also run the original upstream idle-window tests for comparison. [CI evidence](https://github.com/mizorewww/laya-mlx/actions/runs/39354961828).
+
+The original pinned upstream suite reproduced the same idle-window failure on the same CI runner; all 254 native/integration tests passed. This timing instability remains documented in [CI evidence](https://github.com/mizorewww/laya-mlx/blob/main/docs/CI_TIMING.md).
