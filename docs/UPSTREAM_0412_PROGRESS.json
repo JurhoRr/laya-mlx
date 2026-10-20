@@ -705,11 +705,8 @@
     "FP16 and fixed-shape ANE have separately documented precision/capacity boundaries",
     "No remote CI, release, push or Hub artifact replacement performed"
   ],
-  "delivery_status": "release_in_progress",
+  "delivery_status": "published_and_verified",
   "release_version": "0.5.0",
-  "delivery_remaining": [
-    "Push migration and release commit",
-    "Pass remote CI",
-    "Publish and verify GitHub Release and PyPI artifacts"
-  ]
+  "delivery_remaining": [],
+  "release_receipt": "benchmarks/results/release-v050.json"
 }

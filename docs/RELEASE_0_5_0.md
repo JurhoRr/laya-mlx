@@ -29,3 +29,5 @@ limitations. Original historical benchmark and package receipts remain unchanged
 MLX preserves native precision, compilation, row batch limits and bounded
 question-prefix caching. Local-only model resolution is supported by Agent and
 Router; ordinary inference needs no PyTorch or Transformers.
+
+Publication verified on 2026-10-20: GitHub Release and PyPI wheel/sdist hashes match, public wheel source matches the tag, and a public-index reinstall passes all three offline real-model checks. See `benchmarks/results/release-v050.json`.
