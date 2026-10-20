@@ -34,7 +34,11 @@ jobs:
       - name: Upstream host contracts
         run: pytest -q tests/test_official_contract.py
       - name: Native and integration tests
+        if: success() || failure()
         run: pytest -q --ignore=tests/test_official_contract.py
+      - name: Compare original upstream idle-window assertions
+        if: failure()
+        run: PYTHONPATH=.upstream python -m pytest .upstream/tests/test_serve.py -q -k idle_window
       - name: Diagnose native CPU failures
         if: failure()
         run: python -u -m scripts.diagnose_parallel_cpu
