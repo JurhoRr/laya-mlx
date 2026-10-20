@@ -1,4 +1,4 @@
-# Unreleased v0.4.12 migration
+# 0.5.0 migration to upstream v0.4.12
 
 The host API targets upstream `ffc142012af63d015fa19f05f29f9c5ff329a2cc`.
 Batch prediction, long-text prediction, structured decisions, hooks, calibration,

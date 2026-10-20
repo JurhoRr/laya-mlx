@@ -1,0 +1,16 @@
+{
+  "version": "0.5.0",
+  "native_source_sha256": "ff54d9a38ff67fbc313c82ef92dfe3956d13647a0bca2ce266af42efa2a1e209",
+  "qualification_source_sha256": "f622efca650c0f832884264d2acff292cb6a97d536767e339e7f6b231f8cf3f4",
+  "runtime_change_since_qualification": "Only __version__ 0.4.0 to 0.5.0",
+  "artifacts": {
+    "laya_mlx-0.5.0.tar.gz": "a06e85e5f83eb1dbff647411aa406a553c90c44c72b52357580be49a64ecd068",
+    "laya_mlx-0.5.0-py3-none-any.whl": "de7990580c4be3974663caa21c98684cb02969127ecb0b559609fe2dc78a1d7f"
+  },
+  "tests_passed": 319,
+  "strict_twine": "passed",
+  "publication_status": "pending_remote_ci",
+  "offline_wheel_smoke": "wheel-v050-smoke.json",
+  "offline_real_models": 3,
+  "installed_native_source_matches": true
+}

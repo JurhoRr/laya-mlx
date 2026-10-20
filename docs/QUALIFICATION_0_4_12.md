@@ -1,6 +1,6 @@
 # v0.4.12 qualification evidence
 
-Upstream: `ffc142012af63d015fa19f05f29f9c5ff329a2cc`. Local source remains unpublished, package version 0.4.0.
+Upstream: `ffc142012af63d015fa19f05f29f9c5ff329a2cc`. These development qualification results used package version 0.4.0. The 0.5.0 release changes only runtime version metadata; final package and publication evidence is recorded separately in `benchmarks/results/release-v050.json`.
 
 ## Correctness and scope
 
