@@ -33,5 +33,7 @@
   "public_wheel_source_matches": true,
   "public_install_smoke": "pypi-v050-smoke.json",
   "ci_run": "https://github.com/mizorewww/laya-mlx/actions/runs/39351904377",
-  "release_run": "https://github.com/mizorewww/laya-mlx/actions/runs/39352243769"
+  "release_run": "https://github.com/mizorewww/laya-mlx/actions/runs/39352243769",
+  "post_release_ci": "https://github.com/mizorewww/laya-mlx/actions/runs/39354961828",
+  "ci_timing_note": "Documentation-only CI runs exposed intermittent failures in unchanged upstream 100 ms idle-window assertions. Host contracts now run before native tests in a separate process; all assertions and timeouts remain unchanged. Full CI passed after this scheduling change. Previous failed attempts remain visible in Actions."
 }

@@ -31,3 +31,5 @@ question-prefix caching. Local-only model resolution is supported by Agent and
 Router; ordinary inference needs no PyTorch or Transformers.
 
 Publication verified on 2026-10-20: GitHub Release and PyPI wheel/sdist hashes match, public wheel source matches the tag, and a public-index reinstall passes all three offline real-model checks. See `benchmarks/results/release-v050.json`.
+
+Post-release CI runs exposed intermittent failures in the unchanged upstream idle-window timing test. Running host contracts before native model tests in a separate process passed the complete CI; no runtime, assertion or timeout was changed. [CI evidence](https://github.com/mizorewww/laya-mlx/actions/runs/39354961828).
