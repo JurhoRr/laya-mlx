@@ -10,15 +10,16 @@
 
 GIF 使用真实游戏记录按原始时间戳渲染。每步都调用 Laya，界面显示循环路径安全层及其接管次数。上面的 13.4 / 7.4 ms 来自**单问题 API 基准**，并非每步批量回答三个问题的 Snake 帧耗时；游戏速度见[独立报告](docs/SNAKE_BENCHMARKS.md)。
 
-## 0.5.0：对齐上游 v0.4.12
+## 对齐上游 v0.4.17
 
-当前源码以 `ffc142012af63d015fa19f05f29f9c5ff329a2cc` 为上游目标，已加入批量、长文本、
-structured decisions、hooks、校准、评测、HTTP/MCP 和框架/工具集成；
-[验收记录](docs/UPSTREAM_0412_PROGRESS.json) 列明正确性、性能、安装包证据及剩余检查和限制。
-历史基准只代表报告记录的版本。原生 MLX 执行、精度选择、编译和提示词缓存保持可用。
-`Router()` 默认驻留上限改为官方的两个模型；指定 `max_loaded=1` 可保留原先上限。
-具体接口、兼容性变化和额外依赖见[英文迁移说明](README.md#050-upstream-v0412-migration)，
-验证状态见[进度记录](docs/UPSTREAM_0412_PROGRESS.json)。
+当前源码以 `fe9a6c35023a7d94102e7feaaeaae8857d9d1b07` 为上游目标。
+包版本保持 **0.5.0**，本次源码迁移不是新版本发布。新增可选语言路由解释，
+修复长文档 end hook 后的窗口归属，并移植可靠性校准、集成响应校验、HTTP 请求体超时、
+批量 token 上限及输入文件诊断。原生 MLX 执行、精度选择、编译和提示词缓存保持可用。
+[迁移清单与验证记录](docs/MIGRATION_0_4_17.md) 列出完整范围、后端排除项和验证限制：
+Linux host 测试已通过，本次原生 MLX 数值对照仍待 macOS 验证。
+[v0.4.12 历史验收记录](docs/UPSTREAM_0412_PROGRESS.json) 与已有基准只代表各自记录的版本。
+具体接口和复现命令见[英文 README](README.md#upstream-v0417-migration)。
 
 ## 快速开始
 
@@ -212,15 +213,15 @@ v0.4.0 已选择性移植上游 `1adc59f`（v0.4.1）。**默认行为变更：*
   修复 `Envoyé depuis mon iPhone` 等法语设备签名的清理。
 
 以下历史验证使用 sequential `573e5b6` 与 parallel layout `1adc59f`；
-当前 CI 的两种布局对照均固定到 v0.4.12。三个已发布检查点的 FP32/FP16 重新验证通过 378/378 个 argmax 对齐，
+当前 CI 的两种布局对照均固定到 v0.4.17。三个已发布检查点的 FP32/FP16 重新验证通过 378/378 个 argmax 对齐，
 每组 100 次重复调用均为有限、确定输出，活跃内存增长为零
 （[原始验证报告](benchmarks/results/upstream-v041-validation.json)）。当时发布的选择性移植未包含 batch/长文档、structured decisions、hooks 和 HTTP/MCP；
-上述尚未发布的迁移已接入这些 host 接口。训练及其他后端执行仍属于适配边界。使用示例及复现命令见[英文 README](README.md#upstream-v041-runtime-port)。
+0.5.0 已发布版本接入了这些 host 接口；本次源码继续迁移至 v0.4.17。训练及其他后端执行仍属于适配边界。使用示例及复现命令见[英文 README](README.md#upstream-v041-runtime-port)。
 
 ### v0.3.5 之后的上游修复
 
 已选择性移植上游 `4aa6761`（v0.3.23 源码树）的输入处理、语言路由及邮件清理修复；
-这不代表支持上游全部 API。当时的神经网络架构对照固定在 `573e5b6`；当前 CI 已对齐 v0.4.12。
+这不代表支持上游全部 API。当时的神经网络架构对照固定在 `573e5b6`；当前 CI 已固定到 v0.4.17。
 
 - 长对话列表截断时保留最新内容；字符串和字典保留开头。启用 prefix cache 时规则相同。
 - `noul` 的 criteria 只接受 `false` / `true`（支持 Python 布尔键）；
