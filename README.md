@@ -10,14 +10,18 @@
 
 The GIF is an original-speed render of a real local Snake run. Every move calls Laya; the visible cycle safety layer can correct unsafe proposals. The latency figures above are the separate **one-question API benchmark**, not the frame time of the three-question Snake loop. [Watch the 30-second MP4](https://github.com/mizorewww/laya-mlx/blob/main/docs/assets/snake-demo.mp4) · [Snake speed and stability](https://github.com/mizorewww/laya-mlx/blob/main/docs/SNAKE_BENCHMARKS.md).
 
-## 0.5.0: upstream v0.4.12 migration
+## Upstream v0.4.17 migration
 
-The current source tree targets upstream `ffc142012af63d015fa19f05f29f9c5ff329a2cc`.
-It now includes `Agent`/`Router.predict_batch`, `predict_long`, `decide`/`decide_batch`,
-hooks (including `OptionStabilityHook`), calibration, evaluation, HTTP/MCP serving,
-and the upstream framework/tool integrations. Release version: 0.5.0. The [qualification record](docs/UPSTREAM_0412_PROGRESS.json) lists correctness,
-performance and installed-package evidence, remaining gates and limitations.
-Historical timings below describe their recorded revisions, not this migration.
+The current source tree targets upstream `fe9a6c35023a7d94102e7feaaeaae8857d9d1b07`.
+Package version remains **0.5.0**; this source migration is not a new release.
+It adds opt-in language routing explanations, preserves long-document answer attribution
+through end hooks, tightens reliability calibration and malformed-response handling, and
+ports HTTP body deadlines, batch token limits, and input-file diagnostics.
+The [migration inventory and validation record](docs/MIGRATION_0_4_17.md) identifies every
+upstream change and backend exclusion. Linux host checks and macOS native CPU tests pass
+([CI evidence](https://github.com/Omicron0314/laya-mlx/actions/runs/40822499425)); full-checkpoint
+GPU benchmarks were not rerun. The [v0.4.12 qualification record](docs/UPSTREAM_0412_PROGRESS.json)
+and historical timings below describe their recorded revisions.
 
 MLX keeps its native encoder/decision head, CPU/GPU streams, `dtype`, row `batch_size`,
 `pad_to_multiple`, native `compile=True`, and bounded `cache_prompts=True` controls.
@@ -45,7 +49,7 @@ retains the serialization lock until it actually exits. `hooks_timeout` includes
 that lock; a hook whose wait expires is not invoked later. Already-running Python hooks cannot
 be interrupted and may still mutate their context after timeout.
 
-See [migration evidence and pending gates](docs/UPSTREAM_0412_PROGRESS.json).
+See [current migration evidence and validation limits](docs/MIGRATION_0_4_17.md).
 
 ## Quick start
 
@@ -330,7 +334,7 @@ Spanish while preserving emphasis capitals and mixed scripts. French device foot
 `Envoyé depuis mon iPhone` are correctly removed. Language detection remains heuristic.
 
 The historical validation below used `573e5b6` for sequential architecture checks and
-`1adc59f` for parallel layout. Current CI uses v0.4.12 for both. At the v0.4.1 migration,
+`1adc59f` for parallel layout. Current CI is pinned to v0.4.17 for both. At the v0.4.1 migration,
 the three published checkpoints were rechecked in FP32/FP16:
 378/378 argmax agreements, 100 deterministic finite calls per configuration, and zero measured
 active-memory growth ([raw validation report](benchmarks/results/upstream-v041-validation.json)).
@@ -341,7 +345,7 @@ HTTP/MCP serving. Version 0.5.0 adds these host interfaces.
 
 The runtime selectively incorporates input, routing and email fixes from upstream
 `4aa6761` (v0.3.23 source tree). That historical sync did not add batch, long-document, hooks or server APIs.
-Current host and sequential reference tests target v0.4.12; the older reports retain their pins.
+Current host and sequential reference tests target v0.4.17; the older reports retain their pins.
 
 - Chronological conversation lists keep their newest tokens when the context fills;
   strings and dictionaries keep their beginning. Prefix caching uses the same rule.
@@ -382,13 +386,10 @@ The export contains `model.safetensors`, encoder and agent configurations, token
 ## Tests and benchmarks
 
 ```bash
-uv sync --extra dev --extra reference --extra benchmark --extra demo
+uv sync --extra dev --extra reference --extra benchmark --extra demo --extra serve --extra mcp --extra structured --extra llamaindex
 source .venv/bin/activate
 gh repo clone NandhaKishorM/laya .upstream
-git -C .upstream checkout 573e5b62696ba441230cd6be71d593331b5d23af
-# Independent reference for parallel-layout parity:
-gh repo clone NandhaKishorM/laya .cache/upstream-v0.4.1
-git -C .cache/upstream-v0.4.1 checkout 1adc59f7e371deb601fcfa18a14e25db238addcc
+git -C .upstream checkout fe9a6c35023a7d94102e7feaaeaae8857d9d1b07
 pytest -q
 python -m benchmarks.download
 python -m benchmarks.validate --repeats 100
@@ -399,7 +400,11 @@ python -m benchmarks.report
 
 Run GPU measurements sequentially. Unit tests use small random models and include direct comparisons with Transformers and the pinned upstream decision head. Real checkpoint validation tests tokenization, logits, calibrated probabilities, repeated outputs and active memory growth. The benchmark runs each backend/checkpoint in a fresh process and stores every timing sample in [benchmarks/results](https://github.com/mizorewww/laya-mlx/blob/main/benchmarks/results). The [full report](https://github.com/mizorewww/laya-mlx/blob/main/BENCHMARKS.md) explains the timing boundaries and precision differences.
 
-GitHub Actions runs small-model CPU tests on a macOS arm64 runner. Full checkpoint GPU benchmarks are measured locally and are not part of hosted CI.
+For Linux host-only checks, install `.[dev,serve,mcp,structured]` and run
+`pytest -q tests/test_official_host.py tests/test_upstream_0417.py`. These tests use
+real host methods with stub inference and do not establish MLX numerical parity.
+
+GitHub Actions runs those host checks on Linux and small-model CPU tests on a macOS arm64 runner. Full checkpoint GPU benchmarks are measured locally and are not part of hosted CI.
 
 ## Performance research
 
@@ -424,7 +429,7 @@ The preparation script checks every exported tensor against its original FP16 so
 
 ## Attribution and license
 
-Apache-2.0; see [LICENSE](https://github.com/mizorewww/laya-mlx/blob/main/LICENSE) and [NOTICE](https://github.com/mizorewww/laya-mlx/blob/main/NOTICE). Laya and its pretrained weights are by Convai Innovations and upstream contributors. Prompt construction, output formatting, language routing, email utilities and presets are adapted from [NandhaKishorM/laya](https://github.com/NandhaKishorM/laya) at commit `573e5b62696ba441230cd6be71d593331b5d23af`. The neural architecture is reimplemented in MLX following Laya and Hugging Face ModernBERT.
+Apache-2.0; see [LICENSE](https://github.com/mizorewww/laya-mlx/blob/main/LICENSE) and [NOTICE](https://github.com/mizorewww/laya-mlx/blob/main/NOTICE). Laya and its pretrained weights are by Convai Innovations and upstream contributors. Prompt construction, output formatting, language routing, email utilities and presets are adapted from [NandhaKishorM/laya](https://github.com/NandhaKishorM/laya); the current source target is `fe9a6c35023a7d94102e7feaaeaae8857d9d1b07` (v0.4.17). The neural architecture is reimplemented in MLX following Laya and Hugging Face ModernBERT.
 
 ## Maintenance and releases
 
@@ -439,7 +444,7 @@ them to PyPI using the repository's `PYPI_API_TOKEN` secret, and creates a GitHu
 A failed test or build prevents publishing.
 
 
-The v0.4.12 surface audit preserves all upstream host parameters and root exports.
+The v0.4.17 surface audit preserves all upstream host parameters and root exports.
 Native `backend`/`dtype_for()` introspection identifies MLX; no PyTorch Backend
 object is installed. Runtime `set_backend()` is explicitly unsupported. TileLang
 `accelerate()` returns false on this non-CUDA runtime (or raises with `strict=True`),
@@ -447,4 +452,4 @@ and `deaccelerate()` does not disable native MLX compilation. Use constructor
 controls to choose native execution settings. `Router(local_files_only=True)` now
 reaches the MLX checkpoint cache resolver; Core ML `compute_units` is not an MLX
 Router option. The machine-readable surface audit is in
-`docs/UPSTREAM_0412_API_AUDIT.json`.
+`docs/UPSTREAM_0417_API_AUDIT.json`.
