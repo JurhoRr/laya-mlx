@@ -18,8 +18,9 @@ It adds opt-in language routing explanations, preserves long-document answer att
 through end hooks, tightens reliability calibration and malformed-response handling, and
 ports HTTP body deadlines, batch token limits, and input-file diagnostics.
 The [migration inventory and validation record](docs/MIGRATION_0_4_17.md) identifies every
-upstream change and backend exclusion. Linux host assertions pass; native MLX and model
-parity for this revision await macOS validation. The [v0.4.12 qualification record](docs/UPSTREAM_0412_PROGRESS.json)
+upstream change and backend exclusion. Linux host checks and macOS native CPU tests pass
+([CI evidence](https://github.com/Omicron0314/laya-mlx/actions/runs/40822499425)); full-checkpoint
+GPU benchmarks were not rerun. The [v0.4.12 qualification record](docs/UPSTREAM_0412_PROGRESS.json)
 and historical timings below describe their recorded revisions.
 
 MLX keeps its native encoder/decision head, CPU/GPU streams, `dtype`, row `batch_size`,
@@ -42,7 +43,7 @@ Optional extras are `serve`, `mcp`, `structured`, `calibration`, `langchain`, `l
 PyTorch compile controls, ONNX execution and training remain explicit backend boundaries.
 Upstream's standalone HTTP SDK can target the HTTP service; it is a separate package.
 
-See [migration evidence and pending gates](docs/UPSTREAM_0412_PROGRESS.json).
+See [current migration evidence and validation limits](docs/MIGRATION_0_4_17.md).
 
 ## Quick start
 

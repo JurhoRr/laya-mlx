@@ -17,7 +17,7 @@ GIF 使用真实游戏记录按原始时间戳渲染。每步都调用 Laya，�
 修复长文档 end hook 后的窗口归属，并移植可靠性校准、集成响应校验、HTTP 请求体超时、
 批量 token 上限及输入文件诊断。原生 MLX 执行、精度选择、编译和提示词缓存保持可用。
 [迁移清单与验证记录](docs/MIGRATION_0_4_17.md) 列出完整范围、后端排除项和验证限制：
-Linux host 测试已通过，本次原生 MLX 数值对照仍待 macOS 验证。
+Linux host 与 macOS 原生 CPU 测试均已通过（[CI 记录](https://github.com/Omicron0314/laya-mlx/actions/runs/40822499425)），完整检查点的 GPU 性能基准未重跑。
 [v0.4.12 历史验收记录](docs/UPSTREAM_0412_PROGRESS.json) 与已有基准只代表各自记录的版本。
 具体接口和复现命令见[英文 README](README.md#upstream-v0417-migration)。
 

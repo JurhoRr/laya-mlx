@@ -66,9 +66,9 @@
       "summary": "Exploratory mixed-native run: 128 passed, 2 failed, 2 errors; all four blocked cases require unavailable MLX"
     },
     {
-      "command": "macOS full native tests and numerical checkpoint qualification",
-      "result": "not-run",
-      "summary": "Linux x86_64 cannot execute MLX; macOS CI prepared, real checkpoints not revalidated"
+      "command": "macOS CI host contracts, native CPU and integration tests",
+      "result": "passed",
+      "summary": "74 contract tests passed; 298 native/integration tests passed, 1 skipped; build passed. Full-checkpoint GPU qualification not rerun."
     },
     {
       "command": "git diff --check && git diff --cached --name-only",
@@ -112,9 +112,18 @@
   "upstream_host_wrapper_count": 31,
   "host_assertions_modified": false,
   "adapter_exclusions": "docs/MIGRATION_0_4_17.md#assertion-adapter-and-exclusions",
-  "native_validation": "pending macOS; no native parity claim",
+  "native_validation": "macOS CPU CI passed; full-checkpoint GPU qualification not rerun",
+  "remote_ci": {
+    "url": "https://github.com/Omicron0314/laya-mlx/actions/runs/40822499425",
+    "source_commit": "0e8c0e51f8914908cc99591576ff1deeed205c82",
+    "conclusion": "success",
+    "linux_host_passed": 73,
+    "macos_contract_passed": 74,
+    "macos_native_integration_passed": 298,
+    "macos_native_integration_skipped": 1
+  },
   "residual_risks": [
-    "Native dtype construction, MLX CPU/GPU execution, model parity and native MCP cache checks require macOS CI.",
+    "Native CPU tests and small-model numerical parity passed; full-checkpoint GPU inference is outside this CI evidence.",
     "Real checkpoints, GPU performance and memory growth were not rerun.",
     "Pre-existing upstream idle-window timing instability is retained; no retries or timeout changes added.",
     "Optional integration script stubs do not replace real-framework installation tests."

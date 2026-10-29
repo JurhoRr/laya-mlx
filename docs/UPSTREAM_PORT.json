@@ -4,7 +4,7 @@
   "upstream_version": "0.4.17",
   "upstream_commit": "fe9a6c35023a7d94102e7feaaeaae8857d9d1b07",
   "previous_upstream_commit": "ffc142012af63d015fa19f05f29f9c5ff329a2cc",
-  "migration_status": "host_checked_native_validation_pending",
+  "migration_status": "host_and_native_cpu_ci_passed",
   "release_status": "source_migration_only_no_release",
   "policy": "Official host behavior is authoritative; native MLX tensor, loader, dtype, compile, cache and stream boundaries are preserved.",
   "upstream_delta": {
@@ -187,7 +187,7 @@
     "local_migration_tests": 42,
     "api_surface_entries": 345,
     "api_unclassified_differences": 0,
-    "native_mlx": "not run on Linux; macOS CI required",
+    "native_mlx": "macOS CPU CI passed: 74 contract tests; 298 native/integration tests, 1 Linux-only skip; full-checkpoint GPU benchmarks not rerun",
     "real_checkpoints": "not rerun for v0.4.17"
   },
   "exclusions": [

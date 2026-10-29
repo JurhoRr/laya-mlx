@@ -9,7 +9,8 @@ All applicable Python changes in `git diff ffc1420..v0.4.17 -- laya` are account
 for below: 26 upstream files, 1,038 additions and 166 deletions. Twenty-four files
 have applicable changes; the other two contain the upstream version bump and the
 duplicate ONNX implementation. This is a source migration with checked host
-behavior. Native MLX qualification for this revision remains pending on macOS.
+behavior. Linux host and macOS native CPU CI passed for source commit
+`0e8c0e51f8914908cc99591576ff1deeed205c82`; full-checkpoint GPU qualification was not rerun.
 
 The current machine-readable inventory is [UPSTREAM_PORT.json](UPSTREAM_PORT.json).
 The previous manifest is retained as [UPSTREAM_0412_PORT.json](UPSTREAM_0412_PORT.json).
@@ -175,7 +176,24 @@ result cardinality, exact metric thresholds, missing scan answers, and AST equal
 for the five changed host helper/method definitions. The macOS runtime suite adds
 three real dtype construction/forward cases for the lazy `DTYPES` boundary.
 
-## Reproduce and remaining gates
+## Remote CI
+
+[Run 40822499425](https://github.com/Omicron0314/laya-mlx/actions/runs/40822499425)
+passed on source commit `0e8c0e51f8914908cc99591576ff1deeed205c82`:
+
+- Linux host job: 73 passed; API audit 345 entries, zero unclassified differences.
+- macOS 26 / Python 3.12 host and native contract phase: 74 passed.
+- macOS native and integration phase: 298 passed, 1 skipped, 3 warnings.
+  The skip is the Linux-only missing-MLX boundary check. Real dtype/forward,
+  sequential/parallel small-model comparisons and installed LlamaIndex tests passed.
+- macOS lint, formatting, wheel and sdist build passed.
+
+The parent review also retained the module-level `snapshot_download` replacement
+point used by the existing offline-resolution regression. Source hashes in the
+validation JSON identify the tested implementation; this CI record is a subsequent
+documentation update.
+
+## Reproduce and validation limits
 
 On a host-only Linux environment:
 
@@ -193,9 +211,9 @@ host assertions before native tests in a separate process and retains the origin
 idle-window failure diagnostics. No timing threshold or retry policy was changed;
 [CI_TIMING.md](CI_TIMING.md) documents the pre-existing upstream scheduling flake.
 
-Native tests, sequential/parallel numerical parity, actual framework installations,
-checkpoint validation, GPU timing and memory growth have **not** been requalified
-on this Linux host. macOS CI and independent review are required before accepting
-native qualification. Historical 0.5.0/v0.4.12 model and performance reports remain
+Native CPU tests and small-model numerical comparisons passed in macOS CI as
+recorded above. Real full-checkpoint validation, GPU timing and memory growth
+were not rerun. Framework suites using stubs remain distinct from the installed
+LlamaIndex tests. Historical 0.5.0/v0.4.12 model and performance reports remain
 valid only for their recorded sources. The package version is unchanged and no
 release has been requested.
